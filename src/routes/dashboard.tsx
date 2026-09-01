@@ -200,7 +200,7 @@ li{font-size:14px}</style></head><body>
           </section>
 
           {/* vitals */}
-          <section className="col-span-12 grid grid-cols-2 gap-5 sm:col-span-4">
+          <section className="col-span-12 grid auto-rows-min grid-cols-2 gap-5 sm:col-span-4">
             <div className="rounded-[24px] bg-surface p-5 ring-1 ring-border rise [animation-delay:180ms]">
               <p className="label-mono">Blood Pressure</p>
               <p className="mt-2 text-3xl font-semibold">
