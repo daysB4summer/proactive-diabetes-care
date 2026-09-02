@@ -10,11 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BloodPressureRouteImport } from './routes/blood-pressure'
+import { Route as BmiRouteImport } from './routes/bmi'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DiabetesRiskRouteImport } from './routes/diabetes-risk'
+import { Route as ProfileRouteImport } from './routes/profile'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BloodPressureRoute = BloodPressureRouteImport.update({
+  id: '/blood-pressure',
+  path: '/blood-pressure',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BmiRoute = BmiRouteImport.update({
+  id: '/bmi',
+  path: '/bmi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -22,31 +36,76 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DiabetesRiskRoute = DiabetesRiskRouteImport.update({
+  id: '/diabetes-risk',
+  path: '/diabetes-risk',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/blood-pressure': typeof BloodPressureRoute
+  '/bmi': typeof BmiRoute
   '/dashboard': typeof DashboardRoute
+  '/diabetes-risk': typeof DiabetesRiskRoute
+  '/profile': typeof ProfileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/blood-pressure': typeof BloodPressureRoute
+  '/bmi': typeof BmiRoute
   '/dashboard': typeof DashboardRoute
+  '/diabetes-risk': typeof DiabetesRiskRoute
+  '/profile': typeof ProfileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/blood-pressure': typeof BloodPressureRoute
+  '/bmi': typeof BmiRoute
   '/dashboard': typeof DashboardRoute
+  '/diabetes-risk': typeof DiabetesRiskRoute
+  '/profile': typeof ProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/blood-pressure'
+    | '/bmi'
+    | '/dashboard'
+    | '/diabetes-risk'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard'
-  id: '__root__' | '/' | '/dashboard'
+  to:
+    | '/'
+    | '/blood-pressure'
+    | '/bmi'
+    | '/dashboard'
+    | '/diabetes-risk'
+    | '/profile'
+  id:
+    | '__root__'
+    | '/'
+    | '/blood-pressure'
+    | '/bmi'
+    | '/dashboard'
+    | '/diabetes-risk'
+    | '/profile'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BloodPressureRoute: typeof BloodPressureRoute
+  BmiRoute: typeof BmiRoute
   DashboardRoute: typeof DashboardRoute
+  DiabetesRiskRoute: typeof DiabetesRiskRoute
+  ProfileRoute: typeof ProfileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +117,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blood-pressure': {
+      id: '/blood-pressure'
+      path: '/blood-pressure'
+      fullPath: '/blood-pressure'
+      preLoaderRoute: typeof BloodPressureRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bmi': {
+      id: '/bmi'
+      path: '/bmi'
+      fullPath: '/bmi'
+      preLoaderRoute: typeof BmiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -65,12 +138,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/diabetes-risk': {
+      id: '/diabetes-risk'
+      path: '/diabetes-risk'
+      fullPath: '/diabetes-risk'
+      preLoaderRoute: typeof DiabetesRiskRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BloodPressureRoute: BloodPressureRoute,
+  BmiRoute: BmiRoute,
   DashboardRoute: DashboardRoute,
+  DiabetesRiskRoute: DiabetesRiskRoute,
+  ProfileRoute: ProfileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
