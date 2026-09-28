@@ -160,7 +160,7 @@ function DiabetesRiskPage() {
           <Panel
             className="[animation-delay:180ms]"
             title="Model selection"
-            description="Trained on the Pima diabetes dataset; the higher scoring model is used automatically."
+            description="Trained on the real Pima Indians Diabetes dataset (768 patients, 80/20 split); the more accurate model is used automatically."
           >
             <div className="mt-4 space-y-4">
               {models.map((m) => (

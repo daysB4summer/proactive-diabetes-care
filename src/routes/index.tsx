@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
+import { selectedModel } from "@/lib/health";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,11 +64,11 @@ function Login() {
           <div className="mt-8 grid grid-cols-3 gap-3">
             <div className="rounded-2xl bg-surface p-4 ring-1 ring-border">
               <p className="label-mono">Accuracy</p>
-              <p className="mt-1 text-2xl font-semibold">92.4%</p>
+              <p className="mt-1 text-2xl font-semibold">{(selectedModel.accuracy * 100).toFixed(1)}%</p>
             </div>
             <div className="rounded-2xl bg-surface p-4 ring-1 ring-border">
               <p className="label-mono">Features</p>
-              <p className="mt-1 text-2xl font-semibold">8</p>
+              <p className="mt-1 text-2xl font-semibold">6</p>
             </div>
             <div className="rounded-2xl bg-surface p-4 ring-1 ring-border">
               <p className="label-mono">Report</p>
