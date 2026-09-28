@@ -1,4 +1,6 @@
 import {
+  models,
+  selectedModel,
   bmi,
   bmiCategory,
   bpCategory,
@@ -24,7 +26,7 @@ li{font-size:14px}</style></head><body>
 <h1>HealthGuard AI — Health Report</h1>
 <p style="color:#6b6885;font-size:13px">${patient.name} · Generated ${new Date().toLocaleString()}</p>
 <h2>Diabetes risk</h2><p style="font-size:32px;margin:0"><strong>${score}/100</strong> — ${band.label}</p>
-<p style="font-size:13px;color:#6b6885">Model: Random Forest (92.4% accuracy), auto-selected over Logistic Regression (87.1%).</p>
+<p style="font-size:13px;color:#6b6885">Model: ${models.map((m) => `${m.name} ${(m.accuracy * 100).toFixed(1)}%`).join(" vs ")} — trained on the real Pima Indians Diabetes dataset (768 records); ${selectedModel.name} selected.</p>
 <h2>Patient profile</h2><table>
 <tr><td>Age</td><td align="right">${patient.age}</td></tr>
 <tr><td>Gender</td><td align="right">${patient.gender}</td></tr>

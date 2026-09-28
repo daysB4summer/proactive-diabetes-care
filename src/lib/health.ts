@@ -47,21 +47,43 @@ export function bpCategory(systolic: number, diastolic: number) {
   return { label: "Stage 2 hypertension", tone: "accent" as const };
 }
 
-/**
- * Front-end stand-in for the scikit-learn model served by the Django API.
- * Mirrors the weighting of the selected Random Forest classifier.
- */
+import model from "./model.json";
+
+type Tree = { f: number[]; t: number[]; l: number[]; r: number[]; p: number[] };
+
+/** Feature vector in the order the models were trained on: preg, glucose, dbp, bmi, dpf, age. */
+function features(p: Patient) {
+  const b = bmi(p.heightCm, p.weightKg) || model.imputedMedians.bmi;
+  const dpf = p.familyHistory ? model.dpf.familyHistory : model.dpf.none;
+  return [p.pregnancies, p.glucose || model.imputedMedians.glucose, p.diastolic || model.imputedMedians.dbp, b, dpf, p.age];
+}
+
+function rfProbability(x: number[]) {
+  const trees = model.rf as Tree[];
+  let sum = 0;
+  for (const t of trees) {
+    let n = 0;
+    while (t.l[n] !== -1) n = x[t.f[n]!]! <= t.t[n]! ? t.l[n]! : t.r[n]!;
+    sum += t.p[n]!;
+  }
+  return sum / trees.length;
+}
+
+function lrProbability(x: number[]) {
+  const { mean, scale, coef, intercept } = model.lr;
+  const z = x.reduce((acc, v, i) => acc + ((v - mean[i]!) / scale[i]!) * coef[i]!, intercept);
+  return 1 / (1 + Math.exp(-z));
+}
+
+export const models = model.metrics as { name: string; accuracy: number; auc: number; selected: boolean }[];
+export const selectedModel = (models.find((m) => m.selected) ?? models[0])!;
+export const dataset = model.dataset;
+
+/** Real prediction: probability (0-100) from the model trained on the Pima dataset. */
 export function riskScore(p: Patient) {
-  const b = bmi(p.heightCm, p.weightKg);
-  let score = 0;
-  score += Math.max(0, (p.glucose - 85) * 0.55);
-  score += Math.max(0, (b - 22) * 1.9);
-  score += Math.max(0, (p.age - 30) * 0.32);
-  score += Math.max(0, (p.systolic - 118) * 0.28);
-  score += Math.max(0, (p.diastolic - 76) * 0.18);
-  score += p.familyHistory ? 8 : 0;
-  score += Math.min(p.pregnancies, 6) * 0.8;
-  return Math.round(Math.min(96, Math.max(3, score)));
+  const x = features(p);
+  const prob = selectedModel.name === "Random Forest" ? rfProbability(x) : lrProbability(x);
+  return Math.round(prob * 100);
 }
 
 export function riskBand(score: number) {
@@ -96,7 +118,3 @@ export const glucoseHistory = [
   { month: "Jul", value: 118 },
 ];
 
-export const models = [
-  { name: "Logistic Regression", accuracy: 0.871, selected: false },
-  { name: "Random Forest", accuracy: 0.924, selected: true },
-];

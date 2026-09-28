@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { selectedModel } from "@/lib/health";
 
 export const toneClass = {
   mint: "bg-mint/25 text-foreground",
@@ -129,7 +130,7 @@ export function AppShell({
             <div className="rise [animation-delay:120ms] text-right">
               <p className="text-sm text-muted-foreground">Model selected</p>
               <p className="font-mono text-sm font-medium">
-                Random Forest · 92.4%
+                {selectedModel.name} · {(selectedModel.accuracy * 100).toFixed(1)}%
               </p>
             </div>
           </header>
