@@ -63,20 +63,20 @@ function rfProbability(x: number[]) {
   let sum = 0;
   for (const t of trees) {
     let n = 0;
-    while (t.l[n] !== -1) n = x[t.f[n]] <= t.t[n] ? t.l[n] : t.r[n];
-    sum += t.p[n];
+    while (t.l[n] !== -1) n = x[t.f[n]!]! <= t.t[n]! ? t.l[n]! : t.r[n]!;
+    sum += t.p[n]!;
   }
   return sum / trees.length;
 }
 
 function lrProbability(x: number[]) {
   const { mean, scale, coef, intercept } = model.lr;
-  const z = x.reduce((acc, v, i) => acc + ((v - mean[i]) / scale[i]) * coef[i], intercept);
+  const z = x.reduce((acc, v, i) => acc + ((v - mean[i]!) / scale[i]!) * coef[i]!, intercept);
   return 1 / (1 + Math.exp(-z));
 }
 
 export const models = model.metrics as { name: string; accuracy: number; auc: number; selected: boolean }[];
-export const selectedModel = models.find((m) => m.selected) ?? models[0];
+export const selectedModel = (models.find((m) => m.selected) ?? models[0])!;
 export const dataset = model.dataset;
 
 /** Real prediction: probability (0-100) from the model trained on the Pima dataset. */
